@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="utf-8" />
+  <title>Websocket JavaScript Client</title>
+</head>
+
+<body>
+  <h1>Websocket JavaScript Client</h1>
+
+  <section class="container">
+    <div id="col-1">
+      <p id="state">Ready to connect</p>
+      <p id="connId">Your connection Id: </p>
+
+      <div>
+        <label for="connUrl">Websocket Server URL: </label>
+        <input id="connUrl" />
+        <button id="connBtn" type="button" onclick="onConnBtn()">Connect</button>
+        <button id="closeBtn" disabled onclick="onCloseBtn();">Close socket</button>
+      </div>
+
+      <p></p>
+
+      <div>
+        <label for="sendMsg">Message:</label>
+        <input id="sendMsg" disabled />
+        <button id="sendBtn" type="button" onclick="onSendBtn();" disabled>Send</button>
+      </div>
+
+      <p></p>
+
+      <div>
+        <label for="recipents">Recipent ID:</label>
+        <input id="recipents" disabled />
+      </div>
+
+      <p></p>
+
+      <h2>Communication Log</h2>
+      <table style="width: 90%;">
+        <thead>
+          <tr>
+            <td style="width: 100px;">From</td>
+            <td style="width: 100px;">To</td>
+            <td> Data</td>
+          </tr>
+        </thead>
+        <tbody id="msgLogs">
+
+        </tbody>
+      </table>
+    </div>
+
+    <div id="col-2">
+      <h2>Users connected</h2>
+      <table>
+        <tbody id="userConnected">
+          <!-- <tr>
+            <td><button>HOla papa</button></td>
+          </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+  </section>
+
+  <script src="js/index.js"></script>
+</body>
+
+</html>
