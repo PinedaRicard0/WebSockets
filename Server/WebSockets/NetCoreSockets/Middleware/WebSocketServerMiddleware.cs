@@ -2,7 +2,9 @@
 using NetCoreSockets.Util;
 using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
@@ -28,7 +30,7 @@ namespace NetCoreSockets.Middleware
                 //Adding socket to collection with and id
                 string ConnID = _manager.AddSocket(webSocket);
                 await SendMessageAsync(webSocket, "Connected", ConnID);
-                await NotifyNewConnection(ConnID);
+                await NotifyNewConnection();
 
                 await ReceiveMessage(webSocket, async (result, buffer) =>
                 {
@@ -72,11 +74,18 @@ namespace NetCoreSockets.Middleware
             }
         }
 
-        private async Task NotifyNewConnection(string currentSocketId) {
-            ConcurrentDictionary<string, WebSocket> sockets =  _manager.GetAllSockets();
-            string socketsId = String.Join('|', sockets.Keys);
-            foreach (var obj in sockets) {
-                await SendMessageAsync(obj.Value, "NewUser", socketsId);
+        private async Task NotifyNewConnection()
+        {
+            ConcurrentDictionary<string, WebSocket> sockets = _manager.GetAllSockets();
+            foreach (var obj in sockets)
+            {
+                IEnumerable<string> socketsKeys = sockets.Keys.Where(k => !k.Equals(obj.Key));
+                if (socketsKeys.Count() > 0)
+                {
+                    string socketsId = String.Join('|', socketsKeys);
+                    await SendMessageAsync(obj.Value, "NewUser", socketsId);
+                }
+
             }
         }
     }
